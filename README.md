@@ -1,6 +1,6 @@
 # Laravel Project
 
-Đây là dự án Laravel cho [tên dự án của bạn]. Dự án này bao gồm các tính năng chính như [mô tả tính năng chính của dự án].
+Đây là dự án Laravel cho webdev-intern-assignment-3. Dự án này bao gồm các tính năng chính như Tìm thông tin sinh viên, biểu đồ trực quan về điểm chia làm 4 mức độ của học sinh, xuất file exel.
 
 ## Yêu cầu hệ thống
 
