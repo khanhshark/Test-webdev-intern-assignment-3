@@ -1,6 +1,10 @@
 # Laravel Project
 
 Đây là dự án Laravel cho webdev-intern-assignment-3. Dự án này bao gồm các tính năng chính như Tìm thông tin sinh viên, biểu đồ trực quan về điểm chia làm 4 mức độ của học sinh, xuất file exel.
+![image](https://github.com/user-attachments/assets/243e367a-2493-4073-b6db-a491d98b2522)
+![image](https://github.com/user-attachments/assets/050197cb-25b7-482f-97e9-f5218c96b157)
+![image](https://github.com/user-attachments/assets/0399d9e8-0c3f-4d4b-be01-818ce2e819cd)
+![image](https://github.com/user-attachments/assets/9238ce09-cd89-4cb8-aad8-e4f36be9b5ed)
 
 ## Yêu cầu hệ thống
 
