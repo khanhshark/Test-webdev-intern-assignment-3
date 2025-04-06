@@ -2,27 +2,23 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Validator;
 use League\Csv\Reader;
 
 class StudentScoresSeeder extends Seeder {
     public function run() {
-        $filePath = storage_path('app/public/diem_thi_thpt_2024.csv'); // Đường dẫn file CSV
-
+        $filePath = storage_path('app/public/diem_thi_thpt_2024.csv');
         if (!file_exists($filePath)) {
             echo "CSV file not found!\n";
             return;
         }
-
-        // Đọc dữ liệu từ file CSV
         $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0); // Dòng đầu tiên là tiêu đề cột
-        $records = $csv->getRecords(); // Lấy dữ liệu từng dòng
-
+        $csv->setHeaderOffset(0); 
+        $records = $csv->getRecords();
+        $insertData = [];
         foreach ($records as $record) {
-            // Validate dữ liệu từ CSV
             $validator = Validator::make($record, [
                 'sbd'        => 'required|string|max:10|unique:student_scores,registration_number',
                 'toan'       => 'nullable|numeric|min:0|max:10',
@@ -37,14 +33,11 @@ class StudentScoresSeeder extends Seeder {
                 'ma_ngoai_ngu' => 'nullable|string|max:5'
             ]);
 
-            // Nếu có lỗi, bỏ qua dòng đó và tiếp tục
             if ($validator->fails()) {
                 echo "Dữ liệu không hợp lệ cho SBD: {$record['sbd']}\n";
                 continue;
             }
-
-            // Nếu hợp lệ, chèn vào database
-            DB::table('student_scores')->insert([
+            $insertData[] = [
                 'registration_number'   => trim($record['sbd']),
                 'math'                  => $this->convertToDecimal($record['toan']),
                 'literature'            => $this->convertToDecimal($record['ngu_van']),
@@ -58,13 +51,20 @@ class StudentScoresSeeder extends Seeder {
                 'foreign_language_code' => trim($record['ma_ngoai_ngu']) ?: null,
                 'created_at'            => now(),
                 'updated_at'            => now(),
-            ]);
-        }
-    }
+            ]; 
 
-    /**
-     * Chuyển đổi giá trị về kiểu decimal hoặc NULL nếu trống
-     */
+            if (count($insertData) >= 500) {
+                DB::table('student_scores')->insert($insertData);
+                $insertData = []; 
+            }
+        }
+        if (!empty($insertData)){
+            DB::table('student_scores')->insert($insertData);
+        }
+           
+            
+        echo "Data has been added to the database!\n";   
+    }
     private function convertToDecimal($value) {
         return ($value === '' || $value === null) ? null : (float) $value;
     }

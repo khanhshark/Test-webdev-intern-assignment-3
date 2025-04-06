@@ -133,18 +133,14 @@
         document.addEventListener("DOMContentLoaded", function() {
         let loadingOverlay = document.getElementById("loading-overlay");
 
-       
-
-    // Ẩn spinner sau khi trang đã tải hoàn toàn
-    window.addEventListener("load", function() {
-        loadingOverlay.classList.add("d-none");
-    });
-    // Khi người dùng làm mới trang hoặc điều hướng, hiển thị lại loading
-    window.addEventListener("beforeunload", function (event) {
-    let isExporting = event.target.activeElement.id === "export-btn";
-    if (!isExporting) {
-        loadingOverlay.classList.remove("d-none");
-    }
+        window.addEventListener("load", function() {
+            loadingOverlay.classList.add("d-none");
+        });
+        window.addEventListener("beforeunload", function (event) {
+        let isExporting = event.target.activeElement.id === "export-btn";
+        if (!isExporting) {
+            loadingOverlay.classList.remove("d-none");
+        }
 });
 
 

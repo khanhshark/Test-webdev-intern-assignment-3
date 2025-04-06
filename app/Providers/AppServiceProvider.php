@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\StudentScoreService;
+use App\Interfaces\StudentScoreServiceInterface;
+use App\Interfaces\ExporterInterface;
+use App\Services\ExcelExporter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +16,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->app->bind(StudentScoreServiceInterface::class, StudentScoreService::class);
+        $this->app->bind(ExporterInterface::class, ExcelExporter::class);
     }
 
     /**

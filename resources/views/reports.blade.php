@@ -11,7 +11,6 @@
         </a>
     </div>
     <div class="row">
-        <!-- Biểu đồ thống kê điểm theo môn học -->
         <div class="col-12 col-md-10 col-lg-8">
             <canvas id="scoreChart"></canvas>
         </div>

@@ -1,38 +1,44 @@
 <?php
+
 namespace App\Exports;
 
-use App\Models\StudentScore;
-use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ScoreStatisticsExport implements FromArray, WithHeadings
+class ScoreStatisticsExport implements FromCollection, WithHeadings
 {
     protected $subjects;
+    protected $statistics;
+    protected $headings;
 
-    public function __construct($subjects)
+    public function __construct(array $statistics,array $headings = [])
     {
-        $this->subjects = $subjects;
+        $this->statistics = $statistics;
+        $this->headings = $headings;
     }
 
-    public function array(): array
+    public function collection()
     {
-        $scoreStatistics = [];
-
-        foreach ($this->subjects as $subject) {
-            $scoreStatistics[] = [
-                'Subject'   => $subject,
-                'excellent' => StudentScore::whereNotNull($subject)->where($subject, '>=', 8)->count(),
-                'good'      => StudentScore::whereNotNull($subject)->whereBetween($subject, [6, 7.99])->count(),
-                'average'   => StudentScore::whereNotNull($subject)->whereBetween($subject, [4, 5.99])->count(),
-                'weak'      => StudentScore::whereNotNull($subject)->where($subject, '<', 4)->count(),
-            ];
+        $data = [];
+        $subjects = array_keys($this->statistics);
+       
+        foreach ($subjects as $subject) {
+            $row = [$subject];
+            for ($i = 1; $i < count($this->headings); $i++) {
+                $heading = $this->headings[$i];
+                $row[] = isset($this->statistics[$subject][$heading]) 
+                            ? $this->statistics[$subject][$heading] 
+                            : 0;
+            }
+            $data[] = $row;
         }
-
-        return $scoreStatistics;
+    
+        return collect($data);
     }
+    
 
     public function headings(): array
     {
-        return ['Subject', 'excellent', 'good', 'average', 'weak'];
+        return $this->headings;
     }
 }

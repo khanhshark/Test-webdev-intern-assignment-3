@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class StudentScore extends Model
 {
     //
@@ -24,10 +23,19 @@ class StudentScore extends Model
         'civic_education',
         'foreign_language_code',
     ];
- 
-    public function getGroupAScore()
-    {
-        return ($this->math ?? 0) + ($this->physics ?? 0) + ($this->chemistry ?? 0);
-    }
 
+    public  function getSubjects()
+    {
+        return [
+            'math',
+            'literature',
+            'foreign_language',
+            'physics',
+            'chemistry',
+            'biology',
+            'history',
+            'geography',
+            'civic_education'
+        ];
+    }
 }
